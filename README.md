@@ -10,26 +10,33 @@ Sigue los pasos a continuación para clonar el repositorio, configurar el entorn
 
 Clona el repositorio en tu máquina local:
 
+```bash
 git clone https://github.com/OscarCuba18/SolManAd.git
 cd SolManAd
 
 ### 2. Crear y activar el entorno virtual
 
+```bash
 python -m venv SolManAd_Venv
 SolManAd_Venv\Scripts\activate
 
 ### 3. Intalar dependencias
+```bash
 pip install -r requirements.txt
 
 ### 4. Ejecutar migraciones
+```bash
 python manage.py migrate
 
 ### 5. Crear superusuario
+```bash
 python manage.py createsuperuser
 
 ### 6. Poblar la base de datos con datos de prueba
+```bash
 python seeder.py
 
 ### 6. Poblar la base de datos con datos de prueba
+```bash
 Ejecutar el servidor
 
