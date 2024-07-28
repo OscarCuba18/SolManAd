@@ -38,7 +38,6 @@ python manage.py createsuperuser
 ```bash
 python seeder.py
 ```
-```
 ### 7. Ejecutar el servidor
 ```bash
 python manage.py runserver
