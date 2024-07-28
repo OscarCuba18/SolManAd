@@ -38,9 +38,6 @@ python manage.py createsuperuser
 ```bash
 python seeder.py
 ```
-
-### 7. Poblar la base de datos con datos de prueba
-```bash
 ```
 ### 7. Ejecutar el servidor
 ```bash
