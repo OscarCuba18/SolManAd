@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Solicitudes Asignadas</title>
+</head>
+<body>
+    <h2>Solicitud de Mantenimiento</h2>
+    <p><strong>Descripción: </strong>{{ maintenance_request.description }}</p>
+    {% if assignament %}
+        <p><strong>Asignado a:</strong> {{ assignament.user_id }} - <strong>Estado:</strong> {{ maintenance_request.state }}</p>
+    {% else %}
+        <p><strong>Asignado a:</strong> No asignado - <strong>Estado:</strong> {{ maintenance_request.state }}</p>
+    {% endif %}
+    {% comment %} {% if not is_finalizado%}
+        <p><strong>Descripción: </strong>{{ maintenance_request.description }}</p>
+        <p><strong>Asignado a:</strong> {{assignament.user_id}} - <strong>Estado:</strong> {{maintenance_request.state}}</p>
+    {% else %}
+        <p><strong>Descripción: </strong>{{ maintenance_request.description }}</p>
+        <p><strong>Asignado a:</strong> {{assignament.user_id}} - <strong>Estado:</strong> {{maintenance_request.state}}</p>
+    {% endif %} {% endcomment %}
+    {% if is_encargado and not is_finalizado%}
+        <form method="post" action="{% url 'asignar_solicitud' maintenance_request.id %}">
+            {% csrf_token %}
+            <label for="user_id">Asignar Personal de Mantenimiento:</label>
+            <select name="user_id" id="user_id">
+                {% for personalMantenimiento in personalesMantenimiento %}
+                <option value="{{ personalMantenimiento.id }}">{{ personalMantenimiento.username }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Asignar</button>
+        </form>
+    {% endif %}
+    
+
+    {% if is_personal and not is_finalizado %}
+        <form method="post" action="{% url 'detalle_solicitud' maintenance_request.id %}">
+            {% csrf_token %}
+            <button type="submit" name="finalizar">Finalizado</button>
+        </form>
+    {% endif %}
+    <hr>
+    {% if exist_comments %}
+        <h2>Comentarios</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Usuario</th>
+                    <th>Comentario</th>
+                    <th>Imagen</th>
+                    <th>Video</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for comment in comments %}
+                    <tr>
+                        <td>{{ comment.date_added }}</td>
+                        <td>{{ comment.user_id.username }}</td>
+                        <td>{{ comment.comment }}</td>
+                        <td>
+                            {% if comment.image %}
+                                <img src="{{ comment.image.url }}" alt="Imagen del comentario" style="max-width: 200px;">
+                            {% else %}
+                                S/I
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if comment.video %}
+                                <video controls style="max-width: 200px;">
+                                    <source src="{{ comment.video.url }}" type="video/mp4">
+                                    Tu navegador no soporta la etiqueta de video.
+                                </video>
+                            {% else %}
+                                S/V
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    {% if not is_finalizado%}
+        <h2>Agregar Comentario</h2>
+        <form method="post" action="{% url 'detalle_solicitud' maintenance_request.id %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            <button type="submit">Añadir Comentario</button>
+        </form>
+    {% endif %}
+</body>
+</html>

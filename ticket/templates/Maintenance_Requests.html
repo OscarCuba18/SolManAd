@@ -1,0 +1,36 @@
+<!-- Maintenance_Requests.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Solicitudes - Mantenimiento</title>
+</head>
+<body>
+    <h2>Solicitudes - Mantenimiento</h2>
+    {% if is_solicitante %}
+        <a href="{% url 'crear_solicitudes' %}">Crear nueva solicitud</a>
+    {% endif %}
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha Requerida</th>
+                <th>Usuario</th>
+                <th>Descripción</th>
+                <th>Estado</th>
+                <th>Detalles</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in Maintenance_Requests %}
+            <tr>
+                <td><strong>{{ request.date_required }}</strong></td>
+                <td>{{ request.user_id }}</td>
+                <td>{{ request.description }}</td>
+                <td>{{ request.state }}</td>
+                <td><a href="{% url 'detalle_solicitud' request.id %}">Ver Detalles</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</body>
+</html>
